@@ -23,7 +23,19 @@ $(document).ready(function(){
 			//处理键盘事件以及匹配合适得泡泡
 			$(document).keydown(function(event) {
 				var keycode = event.keyCode;
-
+				$('.bubb' + keycode).animate(
+					{
+					'top': height - 50 + 'px',
+					'padding': '20px' ,
+					'font-size': '50px',
+					"opacity" :0,
+					}, 'slow'
+				);
+				$('.bubb' + keycode).fadeOut('slow').hide('slow', function(){
+					code += 10;
+					$("#score").html(code);
+					$(this).remove();
+				});
 				if(code%100 == 0){
 					var funMsg = Math.floor(Math.random() * 10);
 					switch (funMsg){
@@ -74,19 +86,6 @@ $(document).ready(function(){
 						$(this).fadeOut('fast').remove();
 					});
 				}
-				$('.bubb' + keycode).animate(
-					{
-					'top': height - 50 + 'px',
-					'padding': '20px' ,
-					'font-size': '50px',
-					"opacity" :0,
-					}, 'slow'
-				);
-				$('.bubb' + keycode).fadeOut('slow').hide('slow', function(){
-					code += 10;
-					$("#score").html(code);
-					$(this).remove();
-				});
 			});
 			// 在A～Z中随机选取一个
 			function genLetter(){
