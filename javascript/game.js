@@ -64,7 +64,7 @@ $(document).ready(function(){
 						switch (name){
 							case 'className': message('我不会告诉你吖麟喜欢副班的！！！', 2000);
 								break;
-							case 'organizationName': message('星爷很帅对不对？', 4000);
+							case 'organizationName': $('body').append('<span class="message">星爷很帅对不对？</span>');
 						}
 						stop = true;
 					} else {
