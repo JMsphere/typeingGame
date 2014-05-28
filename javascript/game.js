@@ -6,7 +6,7 @@ $(document).ready(function(){
 		name = '',
 		classNameAllow = ['嘉铭', '庆麟'],
 		organizetionclassNameAllow = ['张沐能', '陈星', '黄淑雯'],
-		picture = ['p3.jpg'];
+		picture = ['p3.png'];
 	$("#start").css({
 		'top': (height/2) + 'px',
 		'left': (width/2) + 'px'
@@ -132,7 +132,6 @@ $(document).ready(function(){
 	function message(msg, msgSpeed){
 		$('body').append('<span class="message">' + msg + '</span>');
 		$('body').find('.message').animate({
-			'padding': 0,
 			'font-size': '40px'
 		}, msgSpeed, function(){
 			$(this).fadeOut('fast').remove();
