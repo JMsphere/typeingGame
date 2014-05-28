@@ -2,28 +2,48 @@ $(document).ready(function(){
 	var 	width = screen.width - 100,
 		height = screen.height -200,
 		code = 0,
-		stop = true;
-
+		stop = true,
+		name = '',
+		classNameAllow = ['嘉铭', '庆麟'],
+		organizetionclassNameAllow = ['张沐能', '陈星', '黄淑雯'],
+		picture = ['p3.jpg'];
 	$("#start").css({
 		'top': (height/2) + 'px',
 		'left': (width/2) + 'px'
 	});
-
-	$("#start").click(function(event) {
-		$(this).animate({
-			'top': ((screen.height - 200)/2) + 'px',
-			'left': ((screen.width - 300)/2) + 'px',
-			'opacity': 0.5,
-			'font-size': '100px',
-		}, 500, function() {
-			$(this).fadeOut('fast');
+	name = prompt('请输入你的全名！谢谢！', '如：杜子腾');
+	if(correctName(name)){
+		message('欢迎你！' + name + '逗B', 2000);
+		$("#start").click(function(event) {
+			$(this).animate({
+				'top': ((screen.height - 200)/2) + 'px',
+				'left': ((screen.width - 300)/2) + 'px',
+				'opacity': 0.5,
+				'font-size': '100px',
+			}, 500, function() {
+				$(this).fadeOut('fast');
+			});
+			message('突破10000分有终极秘密分享!!!!!', 2000);
+			$("#score").show();
+			$("#pause").show();
+			stop = false;
+			genLetter();
+			$("#pause").click(function(){
+				if(stop === false){
+					stop = true;
+					message('2秒后暂停', 2000);
+					setTimeout(stopBubb, 2000);
+				} else {
+					stop = false;
+					genLetter();
+				}
+			});
 		});
-		message('突破10000分有终极秘密分享!!!!!');
-		$("#score").show();
-		stop = false;
-		genLetter();
-	});
-
+	} else {
+		$("#start").fadeOut('slow', function() {
+			$('body').append('<span class="message">你不允许玩这个游戏哦，请联系<span id="master">管理者</span>以获取用户名！</span>');
+		});
+	}
 	//处理键盘事件以及匹配合适泡泡
 	$(document).keydown(function(event) {
 		if(stop === false){
@@ -40,11 +60,19 @@ $(document).ready(function(){
 				);
 				$('.bubb' + keycode).fadeOut('slow').hide('slow', function(){
 					if(code >= 10000){
-						message('恭喜突破10000分!!!');
-						message('我不会告诉你吖麟喜欢副班的！！！');
+						message('恭喜突破10000分!!!', 5000);
+						switch (name){
+							case 'className': message('我不会告诉你吖麟喜欢副班的！！！', 2000);
+								break;
+							case 'organizationName': message('星爷很帅对不对？', 4000);
+						}
 						stop = true;
 					} else {
 						code += 10;
+					}
+					if(code > 0 && (code % 100 == 0)){
+						var msg = '<span class="message"><img src="images/' + picture[0] + '">逗B，又拿到100分了！！</span>';
+						message(msg, 3000);
 					}
 					$("#score").html(code);
 					$(this).remove();
@@ -58,7 +86,7 @@ $(document).ready(function(){
 
 	// 在A～Z中随机选取一个
 	function genLetter(){
-		var speed = 2000.0;
+		var speed = 700.0;
 		var color = randomColor();
 		var key = Math.floor(Math.random() * (90 - 65 + 1)) + 65;
 		var keyChar = String.fromCharCode(key);
@@ -84,7 +112,7 @@ $(document).ready(function(){
 		if(stop === true){
 			clearTimeout(genLetter);
 		} else {
-			if(code > 0 && code %1000 == 0 && speed > 500){
+			if(code > 0 && (code % 100 == 0) && speed > 500){
 				speed = speed / code * 100;
 			}
 			setTimeout(genLetter, speed);
@@ -101,13 +129,33 @@ $(document).ready(function(){
 		}
 	}
 
-	function message(msg){
+	function message(msg, msgSpeed){
 		$('body').append('<span class="message">' + msg + '</span>');
 		$('body').find('.message').animate({
 			'padding': 0,
 			'font-size': '40px'
-		}, 2000, function(){
+		}, msgSpeed, function(){
 			$(this).fadeOut('fast').remove();
 		});
+	}
+	function stopBubb(){
+		$(".bubb").fadeOut('slow', function(){
+			$(this).remove();
+		});
+	}
+	function correctName(name){
+		for (var a in classNameAllow){
+			if(name == classNameAllow[a]){
+				name = 'className';
+				return true;	
+			}
+		}
+		for (var b in organizetionclassNameAllow){
+			if(name == organizetionclassNameAllow[b]){
+				name = 'organizationName';
+				return true;
+			}
+		}
+		return false;
 	}
 });
